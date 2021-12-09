@@ -5,49 +5,47 @@ import { useEffect, useState } from "react";
 // }
 
 function App() {
-  console.log("i run everytime");
-  const [count, setCount] = useState(0);
-  const onCountClick = () => {
-    setCount((current) => current + 1);
-  };
-
-  const [hidden, setHidden] = useState(false);
-  const onHiddenClick = () => setHidden((current) => !current);
-
   const [inputText, setInputText] = useState("");
-  const onChange = (event) => {
-    setInputText(event.target.value);
-  };
-  // console.log(hidden);
+  const onChange = (event) => setInputText(event.target.value);
 
-  useEffect(() => {
-    if (inputText.length > 5) {
-      console.log("i run only input changes over 5 letter");
+  const [toDos, setToDos] = useState([]);
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+
+    if (inputText === "") {
+      return;
+    } else {
+      setToDos((current) => [inputText, ...current]);
+      setInputText("");
     }
-  }, [inputText]);
+  };
 
-  useEffect(() => {
-    console.log("i run only count changes");
-  }, [count]);
-
-  useEffect(() => {
-    console.log("i run only one.. first time");
-  }, []);
+  // console.log(toDos);
 
   return (
     <div>
-      <button onClick={onCountClick}>click me</button>
-      <h1>{count}</h1>
-      <button onClick={onHiddenClick}>{hidden ? "show" : "hidden"}</button>
-      <input
-        onChange={onChange}
-        type="text"
-        placeholder="hahaha"
-        value={inputText}
-      />
-      {/* <Btn /> */}
+      <h1>To do list</h1>
+      <form onSubmit={onSubmit}>
+        <input
+          onChange={onChange}
+          type="text"
+          placeholder="write to do !!"
+          value={inputText}
+        />
+        <button>submit</button>
+      </form>
+      <ul>
+        {toDos.map((item, index) => (
+          <li id={index}>{item}</li>
+        ))}
+      </ul>
     </div>
   );
 }
+
+// numbers.map((number) =>
+//   <li>{number}</li>
+// );
 
 export default App;
